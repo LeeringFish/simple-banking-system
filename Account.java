@@ -19,7 +19,7 @@ public class Account {
         return cardNumber;
     }
 
-    public int getPin() {
+    public int getPIN() {
         return pin;
     }
 
