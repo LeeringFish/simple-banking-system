@@ -1,10 +1,11 @@
 package banking;
 
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        Account newAccount = new Account();
-        System.out.println(newAccount.getCardNumber());
-        System.out.println(newAccount.getPIN());
-        System.out.printf("%04d\n", newAccount.getPIN());
+        BankingSystem system = new BankingSystem();
+        UserInterface ui = new UserInterface(system, new Scanner(System.in));
+        ui.run();
     }
 }
