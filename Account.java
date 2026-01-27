@@ -35,7 +35,43 @@ public class Account {
         return Long.parseLong(cardNumberString);
     }
 
+    private long generateAccountIdentifier() {
+        return random.nextLong(1000000000);
+    }
+
+    private long findChecksum(long cardNum) {
+        long[] digits = longToArray(cardNum);
+        long sum = 0;
+
+        for (int i = 0; i < digits.length - 1; i++) {
+            if (i % 2 == 0) {
+                sum += digits[i];
+            } else if (digits[i] > 4) {
+                sum += 2 * digits[i] - 9;
+            } else {
+                sum += 2 * digits[i];
+            }
+        }
+
+        return ((10 - (sum % 10)) % 10);
+    }
+
+
+
     private int generatePIN() {
         return random.nextInt(10000);
+    }
+
+    private long[] longToArray(long num) {
+        long temp = num;
+        int length = Long.toString(num).length();
+        long[] numArray = new long[length];
+
+        for (int i = length - 1; i >= 0; i--) {
+            numArray[i] = temp % 10;
+            temp /= 10;
+        }
+
+        return numArray;
     }
 }
