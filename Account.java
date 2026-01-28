@@ -28,11 +28,10 @@ public class Account {
     }
 
     private long generateCardNumber() {
-        String BIN = "400000";
-        String CHECKSUM = "5";
-        long accountNumber = random.nextLong(1000000000);
-        String cardNumberString = String.format("%s%09d%s", BIN, accountNumber, CHECKSUM);
-        return Long.parseLong(cardNumberString);
+        long accountNumber = generateAccountIdentifier();
+        long cardNumWithoutChecksum = 400000000000000L + accountNumber;
+        long checksum = findChecksum(cardNumWithoutChecksum);
+        return cardNumWithoutChecksum * 10 + checksum;
     }
 
     private long generateAccountIdentifier() {
@@ -43,8 +42,8 @@ public class Account {
         long[] digits = longToArray(cardNum);
         long sum = 0;
 
-        for (int i = 0; i < digits.length - 1; i++) {
-            if (i % 2 == 0) {
+        for (int i = 0; i < digits.length; i++) {
+            if (i % 2 == 1) {
                 sum += digits[i];
             } else if (digits[i] > 4) {
                 sum += 2 * digits[i] - 9;

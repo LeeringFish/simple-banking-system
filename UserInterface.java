@@ -50,7 +50,7 @@ public class UserInterface {
         System.out.println("Your card number:");
         System.out.println(accountNum);
         System.out.println("Your card PIN");
-        System.out.println(system.retrievePIN(accountNum));
+        System.out.printf("%04d\n", system.retrievePIN(accountNum));
         System.out.println();
     }
 
