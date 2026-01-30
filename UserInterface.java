@@ -45,7 +45,7 @@ public class UserInterface {
     }
 
     private void createAccount() {
-        long accountNum = system.createNewAccount();
+        String accountNum = system.createNewAccount();
         System.out.println("Your card has been created");
         System.out.println("Your card number:");
         System.out.println(accountNum);
@@ -56,9 +56,9 @@ public class UserInterface {
 
     private void attemptLogIn() {
         System.out.println("Enter your card number:");
-        long cardNumEntered = Long.parseLong(scan.nextLine());
+        String cardNumEntered = scan.nextLine();
         System.out.println("Enter your PIN:");
-        int pinEntered = Integer.parseInt(scan.nextLine());
+        String pinEntered = scan.nextLine();
         System.out.println();
 
         if (system.logIn(cardNumEntered, pinEntered)) {

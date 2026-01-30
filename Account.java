@@ -19,8 +19,8 @@ public class Account {
         return cardNumber;
     }
 
-    public int getPIN() {
-        return pin;
+    public String getPIN() {
+        return String.valueOf(pin);
     }
 
     public int getBalance() {

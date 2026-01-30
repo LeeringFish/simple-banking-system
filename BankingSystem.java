@@ -1,31 +1,29 @@
 package banking;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class BankingSystem {
-    private final Map<Long, Account> accounts;
+    private final Database db;
 
-    public BankingSystem() {
-        accounts = new HashMap<>();
+    public BankingSystem(String pathToDB) {
+        db = new Database(pathToDB);
+        db.createTableIfAbsent();
     }
 
-    public long createNewAccount() {
+    public String createNewAccount() {
         Account newAccount = new Account();
-        long accountNum = newAccount.getCardNumber();
-        accounts.put(accountNum, newAccount);
+        String accountNum = String.valueOf(newAccount.getCardNumber());
+        db.addAccount(accountNum, newAccount.getPIN());
         return accountNum;
     }
 
-    public int getBalance(long accountNum) {
-        return accounts.get(accountNum).getBalance();
+    public int getBalance(String accountNum) {
+        return db.getBalance(accountNum);
     }
 
-    public int retrievePIN(long accountNum) {
-        return accounts.get(accountNum).getPIN();
+    public long retrievePIN(String accountNum) {
+        return Long.parseLong(db.getPIN(accountNum));
     }
 
-    public boolean logIn(long accountNum, int pin) {
-        return accounts.containsKey(accountNum) &&  accounts.get(accountNum).getPIN() == pin;
+    public boolean logIn(String accountNum, String pin) {
+        return pin.equals(db.getPIN(accountNum));
     }
 }
