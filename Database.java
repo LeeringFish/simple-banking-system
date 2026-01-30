@@ -119,4 +119,44 @@ public class Database {
             System.out.println(e.getMessage());
         }
     }
+
+    public void decreaseBalance(String cardNum, int amount) {
+        String addToBalance = "UPDATE card SET balance = balance - ? WHERE number = ?";
+        SQLiteDataSource dataSource = new SQLiteDataSource();
+        dataSource.setUrl(url);
+
+        try (Connection con = dataSource.getConnection()) {
+            try (PreparedStatement preparedStatement = con.prepareStatement(addToBalance)) {
+                preparedStatement.setInt(1, amount);
+                preparedStatement.setString(2, cardNum);
+
+                preparedStatement.executeUpdate();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public boolean cardExists(String cardNum) {
+        SQLiteDataSource dataSource = new SQLiteDataSource();
+        dataSource.setUrl(url);
+
+        try (Connection con = dataSource.getConnection()) {
+            try (Statement statement = con.createStatement()) {
+
+                try (ResultSet results = statement.executeQuery("SELECT * FROM card WHERE number='" + cardNum + "'")) {
+                    return results.next();
+                }
+
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return false;
+    }
 }

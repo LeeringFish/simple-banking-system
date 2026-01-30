@@ -23,8 +23,31 @@ public class Account {
         return String.valueOf(pin);
     }
 
-    public int getBalance() {
-        return balance;
+    public static boolean checkCardNumber(String cardNum) {
+        if (cardNum == null || cardNum.isEmpty()) {
+            return false;
+        }
+
+        if (cardNum.matches("\\d*")) {
+            long num = Long.parseLong(cardNum);
+            long[] digits = longToArray(num);
+
+            long sum = 0;
+
+            for (int i = 0; i < digits.length - 1; i++) {
+                if (i % 2 == 1) {
+                    sum += digits[i];
+                } else if (digits[i] > 4) {
+                    sum += 2 * digits[i] - 9;
+                } else {
+                    sum += 2 * digits[i];
+                }
+            }
+
+            return digits[digits.length - 1] == ((10 - (sum % 10)) % 10);
+        }
+
+        return false;
     }
 
     private long generateCardNumber() {
@@ -61,7 +84,7 @@ public class Account {
         return random.nextInt(10000);
     }
 
-    private long[] longToArray(long num) {
+    private static long[] longToArray(long num) {
         long temp = num;
         int length = Long.toString(num).length();
         long[] numArray = new long[length];
@@ -73,4 +96,5 @@ public class Account {
 
         return numArray;
     }
+
 }

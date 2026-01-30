@@ -10,24 +10,37 @@ public class BankingSystem {
 
     public String createNewAccount() {
         Account newAccount = new Account();
-        String accountNum = String.valueOf(newAccount.getCardNumber());
-        db.addAccount(accountNum, newAccount.getPIN());
-        return accountNum;
+        String cardNum = String.valueOf(newAccount.getCardNumber());
+        db.addAccount(cardNum, newAccount.getPIN());
+        return cardNum;
     }
 
-    public int getBalance(String accountNum) {
-        return db.getBalance(accountNum);
+    public int getBalance(String cardNum) {
+        return db.getBalance(cardNum);
     }
 
-    public long retrievePIN(String accountNum) {
-        return Long.parseLong(db.getPIN(accountNum));
+    public long retrievePIN(String cardNum) {
+        return Long.parseLong(db.getPIN(cardNum));
     }
 
-    public boolean logIn(String accountNum, String pin) {
-        return pin.equals(db.getPIN(accountNum));
+    public boolean logIn(String cardNum, String pin) {
+        return pin.equals(db.getPIN(cardNum));
     }
 
-    public void addIncome(String accountNum, int amount) {
-        db.addIncome(accountNum, amount);
+    public void addIncome(String cardNum, int amount) {
+        db.addIncome(cardNum, amount);
+    }
+
+    public boolean checkCardNumber(String cardNum) {
+        return Account.checkCardNumber(cardNum);
+    }
+
+    public boolean cardExists(String cardNum) {
+        return db.cardExists(cardNum);
+    }
+
+    public void transfer(String payer, String payee, int amount) {
+        db.decreaseBalance(payer, amount);
+        db.addIncome(payee, amount);
     }
 }

@@ -77,6 +77,7 @@ public class UserInterface {
                 switch (userChoice) {
                     case 1 -> System.out.printf("Balance: %d\n", system.getBalance(cardNum));
                     case 2 -> addIncome(cardNum);
+                    case 3 -> doTransfer(cardNum);
                     case 5 -> {
                         System.out.println("You have successfully logged out!");
                         loggedIn = false;
@@ -111,6 +112,38 @@ public class UserInterface {
         } catch (NumberFormatException e) {
             System.out.println("Not a valid number!");
         }
+
+    }
+
+    public void doTransfer(String cardNum) {
+        System.out.println("Transfer");
+        System.out.println("Enter card number:");
+        String otherCardNum = scan.nextLine();
+
+        if (!system.checkCardNumber(otherCardNum)) {
+            System.out.println("Probably you made a mistake in the card number. Please try again!");
+            return;
+        }
+
+        if (cardNum.equals(otherCardNum)) {
+            System.out.println("You can't transfer money to the same account!");
+            return;
+        }
+
+        if (!system.cardExists(otherCardNum)) {
+            System.out.println("Such a card does not exist.");
+            return;
+        }
+
+        System.out.println("Enter how much money you want to transfer:");
+        int amount = Integer.parseInt(scan.nextLine());
+
+        if (amount > system.getBalance(cardNum)) {
+            System.out.println("Not enough money!");
+            return;
+        }
+
+        system.transfer(cardNum, otherCardNum, amount);
 
     }
 
