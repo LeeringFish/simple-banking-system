@@ -40,7 +40,10 @@ public class UserInterface {
 
     private void printLoggedInMenu() {
         System.out.println("1. Balance");
-        System.out.println("2. Log out");
+        System.out.println("2. Add Income");
+        System.out.println("3. Do transfer");
+        System.out.println("4. Close account");
+        System.out.println("5. Log out");
         System.out.println("0. Exit");
     }
 
@@ -56,12 +59,12 @@ public class UserInterface {
 
     private void attemptLogIn() {
         System.out.println("Enter your card number:");
-        String cardNumEntered = scan.nextLine();
+        String cardNum = scan.nextLine();
         System.out.println("Enter your PIN:");
         String pinEntered = scan.nextLine();
         System.out.println();
 
-        if (system.logIn(cardNumEntered, pinEntered)) {
+        if (system.logIn(cardNum, pinEntered)) {
             boolean loggedIn = true;
             System.out.println("You have successfully logged in!\n");
             int userChoice;
@@ -72,8 +75,9 @@ public class UserInterface {
                 System.out.println();
 
                 switch (userChoice) {
-                    case 1 -> System.out.printf("Balance: %d\n", system.getBalance(cardNumEntered));
-                    case 2 -> {
+                    case 1 -> System.out.printf("Balance: %d\n", system.getBalance(cardNum));
+                    case 2 -> addIncome(cardNum);
+                    case 5 -> {
                         System.out.println("You have successfully logged out!");
                         loggedIn = false;
                     }
@@ -92,6 +96,22 @@ public class UserInterface {
         }
 
         System.out.println();
+    }
+
+    public void addIncome(String cardNum) {
+        System.out.println("Enter income:");
+        try {
+            int income = Integer.parseInt(scan.nextLine());
+            if (income <= 0) {
+                System.out.println("Must be a positive number!");
+                return;
+            }
+            system.addIncome(cardNum, income);
+            System.out.println("Income was added!");
+        } catch (NumberFormatException e) {
+            System.out.println("Not a valid number!");
+        }
+
     }
 
 }

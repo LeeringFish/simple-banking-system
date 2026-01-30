@@ -1,10 +1,8 @@
 package banking;
 
 import org.sqlite.SQLiteDataSource;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+
+import java.sql.*;
 
 public class Database {
     private final String url;
@@ -103,5 +101,22 @@ public class Database {
         return pin;
     }
 
+    public void addIncome(String cardNum, int amount) {
+        String addToBalance = "UPDATE card SET balance = balance + ? WHERE number = ?";
+        SQLiteDataSource dataSource = new SQLiteDataSource();
+        dataSource.setUrl(url);
 
+        try (Connection con = dataSource.getConnection()) {
+            try (PreparedStatement preparedStatement = con.prepareStatement(addToBalance)) {
+                preparedStatement.setInt(1, amount);
+                preparedStatement.setString(2, cardNum);
+
+                preparedStatement.executeUpdate();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }

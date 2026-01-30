@@ -26,4 +26,8 @@ public class BankingSystem {
     public boolean logIn(String accountNum, String pin) {
         return pin.equals(db.getPIN(accountNum));
     }
+
+    public void addIncome(String accountNum, int amount) {
+        db.addIncome(accountNum, amount);
+    }
 }
