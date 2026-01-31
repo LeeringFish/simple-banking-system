@@ -159,4 +159,21 @@ public class Database {
 
         return false;
     }
+
+    public void deleteAccount(String cardNum) {
+        String delete = "DELETE FROM card WHERE number = ?";
+        SQLiteDataSource dataSource = new SQLiteDataSource();
+        dataSource.setUrl(url);
+
+        try (Connection con = dataSource.getConnection()) {
+            try (PreparedStatement preparedStatement = con.prepareStatement(delete)) {
+                preparedStatement.setString(1, cardNum);
+                preparedStatement.executeUpdate();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }

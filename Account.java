@@ -5,14 +5,12 @@ import java.util.Random;
 public class Account {
     private final long cardNumber;
     private final int pin;
-    private int balance;
     private final Random random;
 
     public Account() {
         random = new Random();
         cardNumber = generateCardNumber();
         pin = generatePIN();
-        balance = 0;
     }
 
     public long getCardNumber() {
@@ -20,7 +18,7 @@ public class Account {
     }
 
     public String getPIN() {
-        return String.valueOf(pin);
+        return String.format("%04d", pin);
     }
 
     public static boolean checkCardNumber(String cardNum) {
@@ -77,8 +75,6 @@ public class Account {
 
         return ((10 - (sum % 10)) % 10);
     }
-
-
 
     private int generatePIN() {
         return random.nextInt(10000);

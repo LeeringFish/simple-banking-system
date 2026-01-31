@@ -3,12 +3,12 @@ package banking;
 import java.util.Scanner;
 
 public class UserInterface {
-    private final BankingSystem system;
+    private final BankingSystem bank;
     private final Scanner scan;
     private boolean running;
 
-    public UserInterface(BankingSystem system, Scanner scan) {
-        this.system = system;
+    public UserInterface(BankingSystem bank, Scanner scan) {
+        this.bank = bank;
         this.scan = scan;
     }
 
@@ -48,12 +48,12 @@ public class UserInterface {
     }
 
     private void createAccount() {
-        String accountNum = system.createNewAccount();
+        String accountNum = bank.createNewAccount();
         System.out.println("Your card has been created");
         System.out.println("Your card number:");
         System.out.println(accountNum);
         System.out.println("Your card PIN");
-        System.out.printf("%04d\n", system.retrievePIN(accountNum));
+        System.out.printf("%04d\n", bank.retrievePIN(accountNum));
         System.out.println();
     }
 
@@ -64,7 +64,7 @@ public class UserInterface {
         String pinEntered = scan.nextLine();
         System.out.println();
 
-        if (system.logIn(cardNum, pinEntered)) {
+        if (bank.logIn(cardNum, pinEntered)) {
             boolean loggedIn = true;
             System.out.println("You have successfully logged in!\n");
             int userChoice;
@@ -75,9 +75,14 @@ public class UserInterface {
                 System.out.println();
 
                 switch (userChoice) {
-                    case 1 -> System.out.printf("Balance: %d\n", system.getBalance(cardNum));
+                    case 1 -> System.out.printf("Balance: %d\n", bank.getBalance(cardNum));
                     case 2 -> addIncome(cardNum);
                     case 3 -> doTransfer(cardNum);
+                    case 4 -> {
+                        bank.closeAccount(cardNum);
+                        System.out.println("The account has been closed!");
+                        loggedIn = false;
+                    }
                     case 5 -> {
                         System.out.println("You have successfully logged out!");
                         loggedIn = false;
@@ -107,7 +112,7 @@ public class UserInterface {
                 System.out.println("Must be a positive number!");
                 return;
             }
-            system.addIncome(cardNum, income);
+            bank.addIncome(cardNum, income);
             System.out.println("Income was added!");
         } catch (NumberFormatException e) {
             System.out.println("Not a valid number!");
@@ -120,7 +125,7 @@ public class UserInterface {
         System.out.println("Enter card number:");
         String otherCardNum = scan.nextLine();
 
-        if (!system.checkCardNumber(otherCardNum)) {
+        if (!bank.checkCardNumber(otherCardNum)) {
             System.out.println("Probably you made a mistake in the card number. Please try again!");
             return;
         }
@@ -130,7 +135,7 @@ public class UserInterface {
             return;
         }
 
-        if (!system.cardExists(otherCardNum)) {
+        if (!bank.cardExists(otherCardNum)) {
             System.out.println("Such a card does not exist.");
             return;
         }
@@ -138,12 +143,12 @@ public class UserInterface {
         System.out.println("Enter how much money you want to transfer:");
         int amount = Integer.parseInt(scan.nextLine());
 
-        if (amount > system.getBalance(cardNum)) {
+        if (amount > bank.getBalance(cardNum)) {
             System.out.println("Not enough money!");
             return;
         }
 
-        system.transfer(cardNum, otherCardNum, amount);
+        bank.transfer(cardNum, otherCardNum, amount);
 
     }
 

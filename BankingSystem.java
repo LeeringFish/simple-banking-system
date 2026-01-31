@@ -43,4 +43,8 @@ public class BankingSystem {
         db.decreaseBalance(payer, amount);
         db.addIncome(payee, amount);
     }
+
+    public void closeAccount(String cardNum) {
+        db.deleteAccount(cardNum);
+    }
 }
